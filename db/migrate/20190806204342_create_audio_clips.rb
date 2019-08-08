@@ -7,6 +7,5 @@ class CreateAudioClips < ActiveRecord::Migration[5.2]
     	t.timestamps
     end
     add_index :audio_clips, :id
-    add_index :speakers, :speaker_id
   end
 end

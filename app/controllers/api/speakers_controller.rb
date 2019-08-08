@@ -4,13 +4,20 @@ class Api::SpeakersController < ApplicationController
 		render :show
 	end
 
+	def show
+		@speaker = Speaker.find(params[:id])
+		render :show
+	end
+
 	def index
 		@speakers = Speaker.all
+		render :index
 	end
 
 	def destroy
 		@speaker = Speaker.find(params[:id])
 		@speaker.destroy
+		render json: @speaker
 	end
 
 	private

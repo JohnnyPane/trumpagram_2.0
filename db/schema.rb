@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_02_014853) do
+ActiveRecord::Schema.define(version: 2019_08_06_204414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,40 @@ ActiveRecord::Schema.define(version: 2019_07_02_014853) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "audio_clips", force: :cascade do |t|
+    t.integer "speaker_id", null: false
+    t.string "audio_url", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["id"], name: "index_audio_clips_on_id"
+  end
+
+  create_table "speakers", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_speakers_on_name"
+  end
+
+  create_table "transcripts", force: :cascade do |t|
+    t.integer "speaker_id", null: false
+    t.string "title", null: false
+    t.string "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "words", force: :cascade do |t|
+    t.integer "audio_id", null: false
+    t.float "start_time", null: false
+    t.float "end_time", null: false
+    t.float "confidence"
+    t.string "word"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["word"], name: "index_words_on_word"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
