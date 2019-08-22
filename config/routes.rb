@@ -3,5 +3,6 @@ Rails.application.routes.draw do
 
 	namespace :api, defaults: { format: :json } do
 		resources :speaker, only: [ :index, :show, :create, :destroy ]
+		resources :audio_clip, only: [ :index, :create ]
 	end
 end
