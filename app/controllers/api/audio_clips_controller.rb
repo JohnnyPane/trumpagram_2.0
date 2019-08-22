@@ -6,7 +6,7 @@ class Api::AudioClipsController < ApplicationController
 	def create
 		@audio_clip = AudioClip.new(audio_clip_params)
 		@audio_clip.audio_url = "FAKE REMOVE COL"
-		@audio_clip.audio_file.attach(params[:file])
+		@audio_clip.audio_file.attach(params[:audio_clip][:file])
 		@audio_clip.save!
 	end
 

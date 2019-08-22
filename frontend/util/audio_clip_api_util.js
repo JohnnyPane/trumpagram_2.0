@@ -9,7 +9,7 @@ export const fetchAudioClips = data => {
 export const createAudioClip = audioClipForm => {
 	return $.ajax({
 		method: 'POST',
-		url: 'api/audio_clip',
+		url: 'api/audio_clips',
 		data: audioClipForm,
 		contentType: false,
 		processData: false

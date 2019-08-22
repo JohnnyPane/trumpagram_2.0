@@ -15,10 +15,6 @@ class AudioClip < ApplicationRecord
 		audio_file.service.send(:object_for, audio_file.key).public_url
 	end
 
-	def penis
-		# penis code goes here
-	end
-
 	def file_type
 		audio_file.filename.to_s.split(".").last
 	end
