@@ -121,7 +121,7 @@ var receiveAudioClips = function receiveAudioClips(audioClips) {
 var createAudioClip = function createAudioClip(clip) {
   return function (dispatch) {
     return _util_audio_clip_api_util__WEBPACK_IMPORTED_MODULE_0__["createAudioClip"](clip).then(function (clip) {
-      return dispatch(createAudioClip(clip));
+      return dispatch(receiveAudioClip(clip));
     });
   };
 };
@@ -219,9 +219,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -248,6 +248,7 @@ function (_React$Component) {
       file: '',
       speaker: ''
     };
+    _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -261,13 +262,19 @@ function (_React$Component) {
       };
     }
   }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      console.log(this.state.speakerId);
+    }
+  }, {
     key: "updateSpeaker",
     value: function updateSpeaker() {
       var _this3 = this;
 
       return function (e) {
         return _this3.setState({
-          speaker: e
+          speaker: e,
+          speakerId: e
         });
       };
     }
@@ -277,7 +284,8 @@ function (_React$Component) {
       e.preventDefault();
       var formData = new FormData();
       formData.append('audio_clip[file]', this.state.file);
-      formData.append('audio_clip[speaker_id]', this.state.speaker.value);
+      formData.append('audio_clip[speaker_id]', this.state.speakerId.value);
+      console.log("CREATE");
       this.props.createAudioClip(formData);
     }
   }, {
@@ -292,7 +300,7 @@ function (_React$Component) {
       var options = this.props.options;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         className: "audio-form",
-        onSubmit: this.handleSubmit.bind(this)
+        onSubmit: this.handleSubmit
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_dropzone__WEBPACK_IMPORTED_MODULE_1__["default"], {
         onDrop: function onDrop(acceptedFiles) {
           return _this4.update('file')({
@@ -308,7 +316,7 @@ function (_React$Component) {
         options: options,
         onChange: this.updateSpeaker(),
         name: "speaker",
-        placeholder: "Pick a speaker"
+        placeholder: "select a speaker..."
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "submit",
         className: "audio-submit",

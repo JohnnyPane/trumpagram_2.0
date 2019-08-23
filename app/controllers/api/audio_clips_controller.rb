@@ -4,7 +4,8 @@ class Api::AudioClipsController < ApplicationController
 	end
 
 	def create
-		@audio_clip = AudioClip.new(audio_clip_params)
+		@audio_clip = AudioClip.new
+		@audio_clip.speaker_id = params[:audio_clip][:speaker_id]
 		@audio_clip.audio_url = "FAKE REMOVE COL"
 		@audio_clip.audio_file.attach(params[:audio_clip][:file])
 		@audio_clip.save!
@@ -12,8 +13,5 @@ class Api::AudioClipsController < ApplicationController
 
 	def delete
 	end
-
-	def audio_clip_params
-		params.require(:audio_clip).permit(:speaker_id)
-	end
+	
 end

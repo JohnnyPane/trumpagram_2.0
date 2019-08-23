@@ -16,6 +16,6 @@ export const receiveAudioClips = audioClips => ({
 
 export const createAudioClip = clip => dispatch => (
 	APIUtil.createAudioClip(clip).then(clip => (
-		dispatch(createAudioClip(clip))
+		dispatch(receiveAudioClip(clip))
 	))
 );

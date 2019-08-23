@@ -12,6 +12,7 @@ class AudioClipForm extends React.Component {
 			file: '',
 			speaker: ''
 		}
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	update(property) {
@@ -20,9 +21,14 @@ class AudioClipForm extends React.Component {
 		});
 	}
 
+	componentDidUpdate() {
+		console.log(this.state.speakerId)
+	}
+
 	updateSpeaker() {
 		return e => this.setState({
 			speaker: e,
+			speakerId: e
 		});
 	}
 
@@ -30,7 +36,8 @@ class AudioClipForm extends React.Component {
 		e.preventDefault();
 		const formData = new FormData()
 		formData.append('audio_clip[file]', this.state.file);
-		formData.append('audio_clip[speaker_id]', this.state.speaker.value);
+		formData.append('audio_clip[speaker_id]', this.state.speakerId.value);
+		console.log("CREATE");
 		this.props.createAudioClip(formData);
 	};
 
@@ -40,7 +47,7 @@ class AudioClipForm extends React.Component {
 
 		return (
 			<div>
-				<form className="audio-form" onSubmit={this.handleSubmit.bind(this)}>
+				<form className="audio-form" onSubmit={this.handleSubmit}>
 					<Dropzone onDrop={acceptedFiles => this.update('file')({ value: acceptedFiles[0]})}>
 					  {({getRootProps, getInputProps}) => (
 					    <section>
@@ -60,7 +67,7 @@ class AudioClipForm extends React.Component {
 						options={options}
 						onChange={this.updateSpeaker()}
 						name="speaker"
-						placeholder="Pick a speaker"
+						placeholder="select a speaker..."
 					/>
 					<input type="submit" className="audio-submit" value="Upload audio"/>
 				</form>
