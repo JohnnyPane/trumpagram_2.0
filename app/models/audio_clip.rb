@@ -1,3 +1,6 @@
+require 'net/http'
+require 'json'
+
 class AudioClip < ApplicationRecord
 	validates :speaker_id, :audio_url, presence: true
 
@@ -23,12 +26,19 @@ class AudioClip < ApplicationRecord
 		"transcribe_#{id}"
 	end
 
+	def client
+		@client ||= Aws::TranscribeService::Client.new
+	end
+
+	# def transcribe
+	# 	create_transcribe_job
+	# end
+
 	def create_transcribe_job
-		client = Aws::TranscribeService::Client.new
 		resp = client.start_transcription_job({
 		  transcription_job_name: transcription_job_name,
 		  language_code: "en-US", # required, accepts en-US, es-US, en-AU, fr-CA, en-GB, de-DE, pt-BR, fr-FR, it-IT, ko-KR, es-ES, en-IN, hi-IN, ar-SA
-		  media_sample_rate_hertz: 1,
+		  # media_sample_rate_hertz: 1,
 		  media_format: file_type, # required, accepts mp3, mp4, wav, flac
 		  media: { # required
 		    media_file_uri: public_url,
@@ -43,5 +53,23 @@ class AudioClip < ApplicationRecord
 		})
 
 		resp
+	end
+
+	def get_transcribe_job
+		client.get_transcription_job({ transcription_job_name: transcription_job_name }).transcription_job
+	end
+
+	def transcribe_job_complete?
+		status = get_transcribe_job.transcription_job_status
+		['COMPLETED', 'FAILED'].include?(status)
+	end
+
+	def transcription
+		return {} unless transcribe_job_complete?
+
+		url = get_transcribe_job.transcript.transcript_file_uri
+		uri = URI(url)
+		response = Net::HTTP.get(uri)
+		JSON.parse(response)
 	end
 end

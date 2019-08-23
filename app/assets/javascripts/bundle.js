@@ -245,7 +245,8 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(AudioClipForm).call(this, props));
     _this.state = {
       speakerId: null,
-      file: ''
+      file: '',
+      speaker: ''
     };
     return _this;
   }
@@ -260,42 +261,54 @@ function (_React$Component) {
       };
     }
   }, {
+    key: "updateSpeaker",
+    value: function updateSpeaker() {
+      var _this3 = this;
+
+      return function (e) {
+        return _this3.setState({
+          speaker: e
+        });
+      };
+    }
+  }, {
     key: "handleSubmit",
     value: function handleSubmit(e) {
       e.preventDefault();
       var formData = new FormData();
       formData.append('audio_clip[file]', this.state.file);
-      formData.append('audio_clip[speaker_id]', this.state.speakerId);
+      formData.append('audio_clip[speaker_id]', this.state.speaker.value);
       this.props.createAudioClip(formData);
     }
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       var _this$state = this.state,
           speakerId = _this$state.speakerId,
-          file = _this$state.file;
+          file = _this$state.file,
+          speaker = _this$state.speaker;
       var options = this.props.options;
-      console.log(this.state);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         className: "audio-form",
         onSubmit: this.handleSubmit.bind(this)
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_dropzone__WEBPACK_IMPORTED_MODULE_1__["default"], {
         onDrop: function onDrop(acceptedFiles) {
-          return _this3.update('file')({
+          return _this4.update('file')({
             value: acceptedFiles[0]
           });
         }
       }, function (_ref) {
         var getRootProps = _ref.getRootProps,
             getInputProps = _ref.getInputProps;
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", getRootProps(), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", getInputProps()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Drag 'n' drop some files here, or click to select files")));
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", getRootProps(), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", getInputProps()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Drag 'n' drop some files here, or click to select files")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("aside", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, file.name)));
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_select__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        value: speakerId,
+        value: speaker,
         options: options,
-        onChange: this.update('speakerId'),
-        name: "speakerId"
+        onChange: this.updateSpeaker(),
+        name: "speaker",
+        placeholder: "Pick a speaker"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "submit",
         className: "audio-submit",
